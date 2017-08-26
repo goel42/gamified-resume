@@ -3,6 +3,7 @@ var h = window.innerHeight;
 var platformLength = 19200;
 var platformHeight = h-70;
 var xcoord_ledge = 3100 +w+100;
+var y_ledge = h-50;
 var xcoord_waterPanel1 = 4000 +w+100;
 var xcoord_groundRestart = 6900 +w+100;
 var waterLength = 500
@@ -18,6 +19,10 @@ var explosion_count = 0;
 var direction = "right";
 
 
+var style_roboto = { font:"24px monospace", fill:"#FFF",align:"center" };
+
+
+
 var game = new Phaser.Game(w,h,Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload(){
@@ -31,6 +36,7 @@ function preload(){
     game.load.image('speechBubble' , 'assets/speechbubble.png')
     game.load.image('ledgeBrick', 'assets/brick_small.png');
     game.load.image('questionBrick' , 'assets/question_block_small.png');
+    game.load.spritesheet('coinsprite', 'assets/coinsprite.png', 110,595);
 	game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.spritesheet('waterAtlas' , 'assets/water.png', 100, 80);
     game.load.image('waterBubble', 'assets/bubble256.png');
@@ -40,6 +46,7 @@ function preload(){
     game.load.image('school', 'assets/school.png');
     game.load.image('iiit', 'assets/school.png');
     game.load.image('submarine', 'assets/submarine.png')
+    game.load.image('PLtable', 'assets/programmingLangs.png')
 
 }
 
@@ -79,21 +86,21 @@ function create(){
 
 	 	var i = xcoord_ledge;
 	 	var s = 0.5;
-	 	for(i = xcoord_ledge; i<= xcoord_ledge + 9*119*s; i+=2*119*s){
-			var ledgeBrick = game.add.sprite(i, (h-450)*s, 'ledgeBrick');
+	 	for(i = xcoord_ledge; i<= xcoord_ledge + 7*119*s; i+=2*119*s){
+			var ledgeBrick = game.add.sprite(i, (y_ledge)*s, 'ledgeBrick');
 			ledgeBrick.scale.setTo(s,s);
 			ledgeBricks.add(ledgeBrick);
 			ledgeBrick.body.immovable = true;
 
 
-			var questionBrick = game.add.sprite(i+(119*s),(h-450)*s,'questionBrick');
+			var questionBrick = game.add.sprite(i+(119*s),(y_ledge)*s,'questionBrick');
 			questionBrick.scale.setTo(s,s);
 			questionBricks.add(questionBrick);
 			questionBrick.body.immovable = true;
 
 	 	}
 
-	 	ledgeBrick = game.add.sprite(i, (h-450)*s, 'ledgeBrick');
+	 	ledgeBrick = game.add.sprite(i, (y_ledge)*s, 'ledgeBrick');
 	 	ledgeBrick.scale.setTo(s,s);
 		ledgeBricks.add(ledgeBrick);
 		ledgeBrick.body.immovable = true;
@@ -109,7 +116,11 @@ function create(){
 		}
 		waterPanel1.callAll('animations.add', 'animations', 'run', [0,1], 2, true);
 		waterPanel1.callAll('play', null, 'run');
+		
+		var PLtable = game.add.sprite(xcoord_waterPanel1+ 800,h-40+100,'PLtable'); 
+
 		createBubbles();
+
 
 		
 
@@ -260,11 +271,68 @@ function collisionHandler(player, questionBrick){
 		    explosion.animations.play('kaboom', 60, false, true);
 		}
 
-		questionBrick.kill();
+		// questionBrick.kill();
+		var s=0.5;
+		if(explosion_count==1){
+			// console.log("blahhh");
+
+			var x = xcoord_ledge+ (119*s);
+			var y = y_ledge*s -(119*5*s);
+			// y_ledge*s because the questionBricks above, have been scaled by 0.5
+			var text = game.add.text(x-25,y-20,'Programming',style_roboto);
+
+			var programming = game.add.sprite(x,y,'coinsprite');
+			programming.animations.add('moving', [0, 1, 2, 3,4], 5, false);
+			programming.animations.play('moving');
+			programming.scale.setTo(s,s);
+			// programming.events.onAnimationComplete(printText("Programming",x,y,5),this);
+
+		}else if(explosion_count ==2){
+			var x = xcoord_ledge+ 3*(119*s);
+
+			var y = y_ledge*s -(119*5*s);
+			// y_ledge*s because the questionBricks above, have been scaled by 0.5
+			var text = game.add.text(x-25,y+(119*s*2)-20,'Web Apps',style_roboto);
+			var webD = game.add.sprite(x,y,'coinsprite');
+
+			webD.animations.add('moving', [0, 1, 2], 3, false);
+			webD.animations.play('moving');
+			webD.scale.setTo(s,s);
+
+		}else if(explosion_count ==3){
+			var x = xcoord_ledge+ 5*(119*s);
+
+			var y = y_ledge*s -(119*5*s);
+			// y_ledge*s because the questionBricks above, have been scaled by 0.5
+			var text = game.add.text(x-25,y + (119*s) -20,'Data Science',style_roboto);
+			var dataSci = game.add.sprite(x,y,'coinsprite');
+
+			dataSci.animations.add('moving', [0, 1, 2,3], 4, false);
+			dataSci.animations.play('moving');
+			dataSci.scale.setTo(s,s);
+
+		}else if(explosion_count ==4){
+			var x = xcoord_ledge+ 7*(119*s);
+
+			var y = y_ledge*s -(119*5*s);
+			// y_ledge*s because the questionBricks above, have been scaled by 0.5
+
+			var design = game.add.sprite(x,y,'coinsprite');
+
+			design.animations.add('moving', [0, 1], 2, false);
+			design.animations.play('moving');
+			design.scale.setTo(s,s);
+			var text = game.add.text(x-20,y + (119*3*s) -20,'Design',{font:"24px monospace",fill:"#000000"});
+
+		}
 
 
 	}
 }
+
+// function printText(str){
+
+// }
 
 function collisionHandler3(player, water){
 	player.loadTexture('submarine',0,true);
