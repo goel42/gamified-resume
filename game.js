@@ -8,7 +8,7 @@ var xcoord_waterPanel1 = 4000 +w+100;
 var xcoord_groundRestart = 6900 +w+100;
 var waterLength = 500
 var delay =0;
-var xcoord_fbd = 100 + w+100;
+var xcoord_fbd = w;
 var xcoord_bus_left = 700 +w+100;
 var xcoord_bus_right = 1500+ w+100;
 var xcoord_school = 1000 + w+100;
@@ -26,6 +26,7 @@ var style_roboto = { font:"24px monospace", fill:"#FFF",align:"center" };
 var game = new Phaser.Game(w,h,Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload(){
+	game.load.image('cloud', 'assets/cloud.png');
 	game.load.spritesheet('finalDude' , 'assets/sprite1.png', 645/8, 160);
 	game.load.spritesheet('dude' , 'assets/dude.png', 32, 48);
 	game.load.spritesheet('dude2' , 'assets/dude4.png', 75, 160);
@@ -40,7 +41,8 @@ function preload(){
 	game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.spritesheet('waterAtlas' , 'assets/water.png', 100, 80);
     game.load.image('waterBubble', 'assets/bubble256.png');
-    game.load.image('fbd', 'assets/fbd.png')
+    game.load.image('milestone', 'assets/milestone.png');
+    game.load.image('fbd', 'assets/faridabad.png')
     game.load.image('bus', 'assets/bus.png' )
     game.load.image('bus_static', 'assets/bus.png');
     game.load.image('school', 'assets/school.png');
@@ -52,6 +54,8 @@ function preload(){
     game.load.image('signboard_cocurricular', 'assets/signboard_cocurricular.png');
     game.load.image('signboard_projects', 'assets/signboard_projects.png');
     game.load.image('signboard_onlineProfiles', 'assets/signboard_onlineprofiles.png');
+    game.load.image('banner1', 'assets/banner1.png');
+    game.load.image('banner2', 'assets/banner2.png');
 
 
 }
@@ -66,10 +70,27 @@ var bus_static_right;
 
 function create(){
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		var sky = game.add.tileSprite(0, 0,platformLength,h,'sky');
+		// var sky = game.add.tileSprite(0, 0,platformLength,h,'sky');
+		    // game.stage.backgroundColor = "#95CEEB";
+		    // game.stage.backgroundColor = "#00BFF3";
+		    game.stage.backgroundColor = "#2ECCFA";
+		    // game.stage.backgroundColor = "#7FC3EC";
+
+
+
 	    game.world.setBounds(0, 0, platformLength, h);
 	    // game.world.setBounds(0, 0, platformLength, h-40+ (7*80));
 	  	// game.world.setBounds(0, 0,platformLength,h+800);
+
+	  	for(var i=0;i<20000;i+=1000){
+			if(i>=6800 && i<=8100){
+			game.add.sprite(i,h-680,'cloud');
+			game.add.sprite(i+400,h-630+50,'cloud');
+			}else{
+			game.add.sprite(i,h-580,'cloud');
+			game.add.sprite(i+400,h-630,'cloud');
+			}
+		}
 
 
 	    platforms = game.add.group();
@@ -81,8 +102,10 @@ function create(){
 	    platforms.add(ground)
 	    ground.body.immovable = true;
 
-	    fbd = game.add.sprite(xcoord_fbd, h-390, 'fbd');
-	    fbd.scale.setTo(0.1,0.1);
+	    milestone = game.add.sprite(w-550, platformHeight-300, 'milestone');
+	    milestone.scale.setTo(0.65,0.65);
+	    fbd = game.add.sprite(xcoord_fbd, h-400, 'fbd');
+	    fbd.scale.setTo(0.6,0.6);
 
 	 	//SKILLS
 	 	ledgeBricks = game.add.group();
@@ -150,6 +173,14 @@ function create(){
 
 		var signboard_onlineprofiles = game.add.sprite(xcoord_groundRestart+5000+20,platformHeight-275, 'signboard_onlineProfiles');
 		signboard_onlineprofiles.scale.setTo(0.55,0.55);
+
+		var banner1 = game.add.sprite(xcoord_groundRestart+450+300,150, 'banner1');
+		banner1.scale.setTo(0.8,0.7);
+
+		var banner2 = game.add.sprite(xcoord_groundRestart+450+700,-60, 'banner2');
+		banner2.scale.setTo(-0.8,0.7);
+
+
 
 
     	school = game.add.sprite (xcoord_school,h-420,'school');
