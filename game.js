@@ -47,6 +47,12 @@ function preload(){
     game.load.image('iiit', 'assets/school.png');
     game.load.image('submarine', 'assets/submarine.png')
     game.load.image('PLtable', 'assets/programmingLangs.png')
+    game.load.image('signboard_skills', 'assets/signboard_skills.png');
+    game.load.image('signboard_experience', 'assets/signboard_experience.png');
+    game.load.image('signboard_cocurricular', 'assets/signboard_cocurricular.png');
+    game.load.image('signboard_projects', 'assets/signboard_projects.png');
+    game.load.image('signboard_onlineProfiles', 'assets/signboard_onlineprofiles.png');
+
 
 }
 
@@ -116,14 +122,9 @@ function create(){
 		}
 		waterPanel1.callAll('animations.add', 'animations', 'run', [0,1], 2, true);
 		waterPanel1.callAll('play', null, 'run');
-		
-		var PLtable = game.add.sprite(xcoord_waterPanel1+ 800,h-40+100,'PLtable'); 
+		var PLtable = game.add.sprite(xcoord_waterPanel1+ 950,h-40+100,'PLtable'); 
 
 		createBubbles();
-
-
-		
-
 
 		waterPanel = game.add.group();
 		for( var j=0;j<=h;j+=80){	
@@ -134,6 +135,21 @@ function create(){
 		}
 		waterPanel.callAll('animations.add', 'animations', 'run', [0,1], 2, true);
 		waterPanel.callAll('play', null, 'run');
+
+
+		var signboard_skills = game.add.sprite(xcoord_waterPanel1 + 75 , h-40+400, 'signboard_skills');
+		signboard_skills.scale.setTo(0.6,0.6);
+		var signboard_experience = game.add.sprite(xcoord_groundRestart+20,platformHeight-275, 'signboard_experience');
+		signboard_experience.scale.setTo(0.55,0.55);
+
+		var signboard_projects = game.add.sprite(xcoord_groundRestart+1500+20,platformHeight-275, 'signboard_projects');
+		signboard_projects.scale.setTo(0.55,0.55);
+
+		var signboard_cocurricular = game.add.sprite(xcoord_groundRestart+3500+20,platformHeight-275, 'signboard_cocurricular');
+		signboard_cocurricular.scale.setTo(0.55,0.55);
+
+		var signboard_onlineprofiles = game.add.sprite(xcoord_groundRestart+5000+20,platformHeight-275, 'signboard_onlineProfiles');
+		signboard_onlineprofiles.scale.setTo(0.55,0.55);
 
 
     	school = game.add.sprite (xcoord_school,h-420,'school');
