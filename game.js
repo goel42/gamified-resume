@@ -48,7 +48,8 @@ function preload(){
     game.load.image('school', 'assets/school.png');
     game.load.image('iiit', 'assets/school.png');
     game.load.image('submarine', 'assets/submarine.png')
-    game.load.image('PLtable', 'assets/programmingLangs.png')
+    // game.load.image('PLtable', 'assets/programmingLangs.png')
+    game.load.image('PLtable', 'assets/pl.png')
     game.load.image('signboard_skills', 'assets/signboard_skills.png');
     game.load.image('signboard_experience', 'assets/signboard_experience.png');
     game.load.image('signboard_cocurricular', 'assets/signboard_cocurricular.png');
