@@ -210,8 +210,8 @@ function create(){
 
 
 
-	    // player = game.add.sprite(w/2, 0, 'finalDude');
-	    player = game.add.sprite(platformLength-1500, 0, 'finalDude');
+	    player = game.add.sprite(w/2, 0, 'finalDude');
+	    // player = game.add.sprite(platformLength-1500, 0, 'finalDude');
 
     	game.physics.arcade.enable(player);
     	player.anchor.setTo(0.5,0.5);
