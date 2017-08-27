@@ -43,8 +43,8 @@ function preload(){
     game.load.image('waterBubble', 'assets/bubble256.png');
     game.load.image('milestone', 'assets/milestone.png');
     game.load.image('fbd', 'assets/faridabad.png')
-    game.load.image('bus', 'assets/bus.png' )
-    game.load.image('bus_static', 'assets/bus_static.png');
+    game.load.image('bus', 'assets/buswithman.png' )
+    game.load.image('bus_static', 'assets/buswithoutman.png');
     game.load.image('school', 'assets/school.png');
     game.load.image('iiit', 'assets/school.png');
     game.load.image('submarine', 'assets/submarine.png')
@@ -200,8 +200,8 @@ function create(){
 
     	bus_static_left = game.add.sprite(xcoord_bus_left,h-300,'bus_static');
     	bus_static_right = game.add.sprite(xcoord_bus_right,h-300,'bus_static');
-    	bus_static_right.scale.setTo(-1,1);
-    	bus_static_left.scale.setTo(-1,1);
+    	// bus_static_right.scale.setTo(-0.3,0.3);
+    	// bus_static_left.scale.setTo(-0.3,0.3);
     	bus_static_right.visible = false;
     	// bus.scale.setTo(0.1,0.1);    
     	// game.physics.arcade.enable(bus);
