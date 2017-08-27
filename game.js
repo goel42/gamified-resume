@@ -1,6 +1,7 @@
 var w = window.innerWidth;
 var h = window.innerHeight;
-var platformLength = 19200;
+// var platformLength = 19200;
+var platformLength = 15000;
 var platformHeight = h-70;
 var xcoord_ledge = 3100 +w+100;
 var y_ledge = h-50;
@@ -14,7 +15,7 @@ var xcoord_bus_left = 700 +w+100;
 var xcoord_bus_right = 1500+ w+100;
 var xcoord_school = 1000 + w+100;
 var xcoord_iiit = 2200 + w+100;
-
+var xcoord_rocket_static = platformLength-400;
 
 var explosion_count = 0;
 
@@ -62,6 +63,8 @@ function preload(){
     game.load.image('signboard_onlineProfiles', 'assets/signboard_onlineprofiles.png');
     game.load.image('banner1', 'assets/banner1.png');
     game.load.image('banner2', 'assets/banner2.png');
+    game.load.image('rocket', 'assets/rocketwithman.png');
+    game.load.image('rocket_static', 'assets/rocketwithout.png');
 
 
 }
@@ -172,6 +175,9 @@ function create(){
 		waterPanel.callAll('animations.add', 'animations', 'run', [0,1], 2, true);
 		waterPanel.callAll('play', null, 'run');
 
+		rocket_static = game.add.sprite(xcoord_rocket_static,h-315,'rocket_static');
+
+
 
 		var signboard_skills = game.add.sprite(xcoord_waterPanel1 + 75 , h-40+400, 'signboard_skills');
 		signboard_skills.scale.setTo(0.6,0.6);
@@ -181,11 +187,11 @@ function create(){
 		var signboard_projects = game.add.sprite(xcoord_groundRestart+1500+20,platformHeight-275, 'signboard_projects');
 		signboard_projects.scale.setTo(0.55,0.55);
 
-		var signboard_cocurricular = game.add.sprite(xcoord_groundRestart+3500+20,platformHeight-275, 'signboard_cocurricular');
-		signboard_cocurricular.scale.setTo(0.55,0.55);
+		// var signboard_cocurricular = game.add.sprite(xcoord_groundRestart+3500+20,platformHeight-275, 'signboard_cocurricular');
+		// signboard_cocurricular.scale.setTo(0.55,0.55);
 
-		var signboard_onlineprofiles = game.add.sprite(xcoord_groundRestart+5000+20,platformHeight-275, 'signboard_onlineProfiles');
-		signboard_onlineprofiles.scale.setTo(0.55,0.55);
+		// var signboard_onlineprofiles = game.add.sprite(xcoord_groundRestart+5000+20,platformHeight-275, 'signboard_onlineProfiles');
+		// signboard_onlineprofiles.scale.setTo(0.55,0.55);
 
 		var banner1 = game.add.sprite(xcoord_groundRestart+450+300,150, 'banner1');
 		banner1.scale.setTo(0.8,0.7);
@@ -202,7 +208,11 @@ function create(){
     	iiit.scale.setTo(0.25,0.25);
 
 
-	    player = game.add.sprite(w/2, 0, 'finalDude');
+
+
+	    // player = game.add.sprite(w/2, 0, 'finalDude');
+	    player = game.add.sprite(platformLength-1500, 0, 'finalDude');
+
     	game.physics.arcade.enable(player);
     	player.anchor.setTo(0.5,0.5);
     	player.body.gravity.y = 600;
@@ -230,6 +240,8 @@ function create(){
 
 function update() {
 
+
+
 	    player.body.velocity.x = 0;
  //    if(player.key =='bus'){
  //    	console.log("blah");
@@ -240,6 +252,10 @@ function update() {
 
 	}
 
+	if(player.key == 'rocket'){
+		player.body.gravity.y = 0;
+		player.body.velocity.y = 0;
+	}
 	game.physics.arcade.overlap(player, waterPanel1, collisionHandler3,null,this);
 	// game.physics.arcade.overlap(player, bus, collisionHandler4,null,this);
 	// game.physics.arcade.collide(bus,platforms);
@@ -253,13 +269,17 @@ function update() {
     	bus_static_left.visible = false;
     }else if(player.body.x>=xcoord_waterPanel1 && player.body.x<=xcoord_groundRestart){
 		console.log("bbbbb");
-		game.world.resize(19200,h-40+9*80);	    
+		game.world.resize(platformLength,h-40+9*80);	    
 		// game.world.setBounds(0, 0, platformLength, h+800);
 
 	}else if(player.body.x>=xcoord_waterPanel2){
 		// game.world.resize(19200,-2000);
-		game.world.setBounds(0,-2000,19200,2000+h);
+		game.world.setBounds(0,-2000,platformLength,2000+h);
 		// game.world.setBounds(xcoord_waterPanel2,-2000,1000,2000+h);
+		if(player.body.x>xcoord_rocket_static+5){
+			rocket_static.visible = false;
+			player.loadTexture('rocket',0,true);
+		}
 	}else{
     	if(player.key == "bus"){
     		player.loadTexture('finalDude',0,true);
@@ -275,7 +295,7 @@ function update() {
 		//Handling the waterPanel1 case 
     	// if(player.body.x<xcoord_waterPanel1 || player.body.x>=xcoord_groundRestart){
 			game.world.setBounds(0, 0, platformLength, h);
-			game.world.resize(19200,h);	    
+			game.world.resize(platformLength,h);	    
 		// }
     }
 
@@ -283,16 +303,27 @@ function update() {
 	if (cursors.left.isDown){
         //  Move to the left
         // player.anchor.setTo(0.5,0.5);
-        direction = "left";
-        player.scale.x =-1;
-        // player.scale.setTo(-1,1)
-        player.body.velocity.x = -1000;
-        player.animations.play('left');
+        if(player.key=='rocket'){
+        	direction = "up";
+        	player.body.velocity.y = 1000;
+        }else{
+	        direction = "left";
+	        player.scale.x =-1;
+	        // player.scale.setTo(-1,1)
+	        player.body.velocity.x = -1000;
+	        player.animations.play('left');
+    	}
     }else if (cursors.right.isDown){
+
+        if(player.key=='rocket'){
+        	direction = "up";
+        	player.body.velocity.y = -1000;
+        }else{
     	direction = "right";
         player.scale.x=1;
         player.body.velocity.x = 1000;
         player.animations.play('right');
+    	}
     }else{
         //  Stand still
         player.animations.stop();
@@ -302,11 +333,20 @@ function update() {
     //  Allow the player to jump if they are touching the ground.
     if (cursors.up.isDown )
     {	
-    	if(player.key == 'finalDude' || player.key == 'submarine'){
+    	if( (player.key == 'finalDude' && player.body.touching.down) || player.key == 'submarine'){
         	player.body.velocity.y = -1000;
     	}
     }
+  //   	if(player.key=='finalDude' && player.body.touching.down==true){
+		// console.log("bombombom");
+		// }
 
+		if(player.key =='rocket' && player.body.touching.down){
+			// console.log("bamboo");
+			player.loadTexture('finalDude',0,true);
+			player.body.x -= 15;
+			rocket_static.visible  =true;
+		}
 }
 
 function createBubbles(){
