@@ -5,7 +5,8 @@ var platformHeight = h-70;
 var xcoord_ledge = 3100 +w+100;
 var y_ledge = h-50;
 var xcoord_waterPanel1 = 4000 +w+100;
-var xcoord_groundRestart = 6900 +w+100;
+var xcoord_waterPanel2 = platformLength-1000;
+var xcoord_groundRestart = 9000 +w+100;
 var waterLength = 500
 var delay =0;
 var xcoord_fbd = w;
@@ -13,6 +14,7 @@ var xcoord_bus_left = 700 +w+100;
 var xcoord_bus_right = 1500+ w+100;
 var xcoord_school = 1000 + w+100;
 var xcoord_iiit = 2200 + w+100;
+
 
 var explosion_count = 0;
 
@@ -26,6 +28,7 @@ var style_roboto = { font:"24px monospace", fill:"#FFF",align:"center" };
 var game = new Phaser.Game(w,h,Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload(){
+	game.load.image('intro', 'assets/intro.png');
 	game.load.image('cloud', 'assets/cloud.png');
 	game.load.spritesheet('finalDude' , 'assets/sprite1.png', 645/8, 160);
 	game.load.spritesheet('dude' , 'assets/dude.png', 32, 48);
@@ -50,6 +53,8 @@ function preload(){
     game.load.image('submarine', 'assets/submarine.png')
     // game.load.image('PLtable', 'assets/programmingLangs.png')
     game.load.image('PLtable', 'assets/pl.png')
+    game.load.image('table2', 'assets/table2.png');
+    game.load.image('table3', 'assets/table3.png');
     game.load.image('signboard_skills', 'assets/signboard_skills.png');
     game.load.image('signboard_experience', 'assets/signboard_experience.png');
     game.load.image('signboard_cocurricular', 'assets/signboard_cocurricular.png');
@@ -82,8 +87,11 @@ function create(){
 	    game.world.setBounds(0, 0, platformLength, h);
 	    // game.world.setBounds(0, 0, platformLength, h-40+ (7*80));
 	  	// game.world.setBounds(0, 0,platformLength,h+800);
-
-	  	for(var i=0;i<20000;i+=1000){
+	  	game.add.sprite(10,50,'cloud');
+	  	game.add.sprite(800,h-750,'cloud');
+	  	game.add.sprite(365,h-650,'cloud');
+	  	game.add.sprite(w-150,100,'cloud');
+	  	for(var i=w;i<20000;i+=1000){
 			if(i>=6800 && i<=8100){
 			game.add.sprite(i,h-680,'cloud');
 			game.add.sprite(i+400,h-630+50,'cloud');
@@ -92,9 +100,10 @@ function create(){
 			game.add.sprite(i+400,h-630,'cloud');
 			}
 		}
-
-
-	    platforms = game.add.group();
+		var introImg = game.cache.getImage('intro');
+	  	var intro = game.add.sprite((w- introImg.width)/2,(h- introImg.height)/2-100,'intro');
+	  	// intro.scale.setTo(0.2,0.2);
+	  	platforms = game.add.group();
 	    platforms.enableBody = true;
 	    ground = game.add.tileSprite(0,platformHeight,xcoord_waterPanel1, 2000, 'platform');
 	    platforms.add(ground)
@@ -147,12 +156,15 @@ function create(){
 		waterPanel1.callAll('animations.add', 'animations', 'run', [0,1], 2, true);
 		waterPanel1.callAll('play', null, 'run');
 		var PLtable = game.add.sprite(xcoord_waterPanel1+ 950,h-40+100,'PLtable'); 
-
+		var table2 = game.add.sprite(xcoord_waterPanel1+950+1000+400,h-40+100,'table2');
+		table2.scale.setTo(0.85,0.85);
+		var table3 = game.add.sprite(xcoord_waterPanel1+950+2000+850, h-40+100,'table3');
+		table3.scale.setTo(0.75,0.75);
 		createBubbles();
 
 		waterPanel = game.add.group();
-		for( var j=0;j<=h;j+=80){	
-			for( var i =500;i>=0;i-=100){
+		for( var j=-1400;j<=h;j+=80){	
+			for( var i =1000;i>=0;i-=100){
 				var water = game.add.sprite(platformLength-i,j,'waterAtlas');
 				waterPanel.add(water);	
 			}
@@ -190,7 +202,7 @@ function create(){
     	iiit.scale.setTo(0.25,0.25);
 
 
-	    player = game.add.sprite(32, 0, 'finalDude');
+	    player = game.add.sprite(w/2, 0, 'finalDude');
     	game.physics.arcade.enable(player);
     	player.anchor.setTo(0.5,0.5);
     	player.body.gravity.y = 600;
@@ -244,6 +256,10 @@ function update() {
 		game.world.resize(19200,h-40+9*80);	    
 		// game.world.setBounds(0, 0, platformLength, h+800);
 
+	}else if(player.body.x>=xcoord_waterPanel2){
+		// game.world.resize(19200,-2000);
+		game.world.setBounds(0,-2000,19200,2000+h);
+		// game.world.setBounds(xcoord_waterPanel2,-2000,1000,2000+h);
 	}else{
     	if(player.key == "bus"){
     		player.loadTexture('finalDude',0,true);
@@ -257,9 +273,10 @@ function update() {
     		bus_static_right.visible = true;
     	}
 		//Handling the waterPanel1 case 
-    	if(player.body.x<xcoord_waterPanel1 || player.body.x>=xcoord_groundRestart){
+    	// if(player.body.x<xcoord_waterPanel1 || player.body.x>=xcoord_groundRestart){
+			game.world.setBounds(0, 0, platformLength, h);
 			game.world.resize(19200,h);	    
-		}
+		// }
     }
 
 
