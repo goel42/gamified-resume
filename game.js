@@ -29,6 +29,8 @@ var style_roboto = { font:"24px monospace", fill:"#FFF",align:"center" };
 var game = new Phaser.Game(w,h,Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload(){
+	text = game.add.text(w/2, h/2, "Loading...",{ font:"80px Roboto",fill: '#ffffff' });
+	text.anchor.setTo(0.5,0.5);
 	game.load.image('intro', 'assets/intro.png');
 	game.load.image('cloud', 'assets/cloud.png');
 	game.load.spritesheet('finalDude' , 'assets/sprite1.png', 645/8, 160);
